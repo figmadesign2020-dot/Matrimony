@@ -2,7 +2,6 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
-import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -60,13 +59,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "matrimonial_site.wsgi.application"
 
-if os.getenv("DATABASE_URL"):
-    DATABASES = {
-        "default": dj_database_url.parse(
-            os.getenv("DATABASE_URL"), conn_max_age=600, ssl_require=True
-        )
-    }
-elif os.getenv("DB_ENGINE") == "postgres":
+if os.getenv("DB_ENGINE") == "postgres":
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
@@ -84,8 +77,6 @@ else:
             "NAME": BASE_DIR / "db.sqlite3",
         }
     }
-
-SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
