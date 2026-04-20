@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row g-4">
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                {% with photo=profile.photos.first %}
+                    {% if photo %}
+                        <img src="{{ photo.image.url }}" class="img-fluid rounded-3 mb-3 profile-avatar" alt="{{ profile.full_name }}">
+                    {% endif %}
+                {% endwith %}
+                <h3>{{ profile.full_name|default:profile.user.email }}</h3>
+                <p class="text-muted">{{ profile.age }} years • {{ profile.gender|title }}</p>
+                <p>{{ profile.city }}, {{ profile.state }}, {{ profile.country }}</p>
+                {% if is_self %}
+                    <a href="{% url 'profiles:edit-profile' %}" class="btn btn-primary w-100 mb-2">Edit Profile</a>
+                {% else %}
+                    <a href="{% url 'matches:send-interest' profile.id %}" class="btn btn-success w-100">Send Interest</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h4 class="mb-3">About</h4>
+                <p>{{ profile.about_me|default:"No description added yet." }}</p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><strong>Religion:</strong> {{ profile.religion }}</li>
+                            <li class="list-group-item"><strong>Caste:</strong> {{ profile.caste }}</li>
+                            <li class="list-group-item"><strong>Mother Tongue:</strong> {{ profile.mother_tongue }}</li>
+                            <li class="list-group-item"><strong>Height:</strong> {{ profile.height }}</li>
+                            <li class="list-group-item"><strong>Marital Status:</strong> {{ profile.marital_status }}</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><strong>Education:</strong> {{ profile.education }}</li>
+                            <li class="list-group-item"><strong>Profession:</strong> {{ profile.profession }}</li>
+                            <li class="list-group-item"><strong>Annual Income:</strong> {{ profile.annual_income }}</li>
+                            <li class="list-group-item"><strong>Approved:</strong> {{ profile.is_approved|yesno:"Yes,No" }}</li>
+                            <li class="list-group-item"><strong>Completed:</strong> {{ profile.profile_completed|yesno:"Yes,No" }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

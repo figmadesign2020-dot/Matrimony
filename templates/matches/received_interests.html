@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <h2 class="mb-4">Received Interests</h2>
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th>Profile</th>
+                        <th>Status</th>
+                        <th>Received On</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for interest in interests %}
+                        <tr>
+                            <td>{{ interest.sender.profile.full_name|default:interest.sender.email }}</td>
+                            <td><span class="badge bg-warning text-dark">{{ interest.status|title }}</span></td>
+                            <td>{{ interest.created_at|date:"M d, Y H:i" }}</td>
+                            <td>
+                                {% if interest.status == "pending" %}
+                                    <a href="{% url 'matches:accept-interest' interest.id %}" class="btn btn-sm btn-success">Accept</a>
+                                    <a href="{% url 'matches:reject-interest' interest.id %}" class="btn btn-sm btn-outline-danger">Reject</a>
+                                {% elif interest.status == "accepted" %}
+                                    <a href="{% url 'chat:start-chat' interest.sender.id %}" class="btn btn-sm btn-primary">Open Chat</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr><td colspan="4" class="text-muted">No received interests yet.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

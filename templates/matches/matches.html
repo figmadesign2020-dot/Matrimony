@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">Suggested Matches</h2>
+    <a href="{% url 'profiles:preferences' %}" class="btn btn-outline-primary">Update Preferences</a>
+</div>
+<div class="row g-4">
+    {% for profile in profiles %}
+        <div class="col-md-6 col-xl-4">
+            <div class="card border-0 shadow-sm h-100">
+                {% with photo=profile.photos.first %}
+                    {% if photo %}
+                        <img src="{{ photo.image.url }}" class="card-img-top profile-cover" alt="{{ profile.full_name }}">
+                    {% endif %}
+                {% endwith %}
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <h5 class="mb-0">{{ profile.full_name|default:profile.user.email }}</h5>
+                        <span class="badge bg-success">{{ profile.age }} yrs</span>
+                    </div>
+                    <p class="text-muted mb-2">{{ profile.city }}, {{ profile.state }}</p>
+                    <p class="small">{{ profile.education }}{% if profile.profession %} • {{ profile.profession }}{% endif %}</p>
+                    <p class="small">{{ profile.about_me|truncatechars:90 }}</p>
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'profiles:public-profile' profile.id %}" class="btn btn-outline-primary btn-sm">View</a>
+                        <a href="{% url 'matches:send-interest' profile.id %}" class="btn btn-primary btn-sm">Send Interest</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p class="text-muted">No suggested matches found. Update your preferences or wait for more approved profiles.</p>
+    {% endfor %}
+</div>
+{% endblock %}

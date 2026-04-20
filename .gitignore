@@ -1,0 +1,76 @@
+# Python
+*.py[cod]
+*$py.class
+__pycache__/
+.pytest_cache/
+.pyre/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Virtual environments
+venv/
+.env
+.env.*
+
+# Django
+*.log
+*.pot
+*.pyc
+*.pyo
+*~
+*.sqlite3
+db.sqlite3
+db.sqlite3.bak
+media/
+staticfiles/
+
+# IDEs/editor settings
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Coverage
+htmlcov/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+.pytest_cache/
+
+# PyCharm
+.idea/
+*.iml
+
+# Logs
+logs/
+*.log
+
+# Secrets
+credentials.json
+
+# Byte-compiled / optimized / DLL files
+*.pyc
+*.pyd
+*.pyo
+*.pdb
+
+# Backup files
+*.bak
+*.swp
+*.swo

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row g-4">
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h3 class="mb-3">Conversations</h3>
+                <div class="list-group">
+                    {% for conversation in conversations %}
+                        {% with other=conversation.participant_one %}
+                            {% if conversation.participant_one == request.user %}
+                                {% with other=conversation.participant_two %}
+                                    <a href="?conversation={{ conversation.id }}" class="list-group-item list-group-item-action {% if selected_conversation and selected_conversation.id == conversation.id %}active{% endif %}">
+                                        {{ other.profile.full_name|default:other.email }}
+                                    </a>
+                                {% endwith %}
+                            {% else %}
+                                <a href="?conversation={{ conversation.id }}" class="list-group-item list-group-item-action {% if selected_conversation and selected_conversation.id == conversation.id %}active{% endif %}">
+                                    {{ other.profile.full_name|default:other.email }}
+                                </a>
+                            {% endif %}
+                        {% endwith %}
+                    {% empty %}
+                        <p class="text-muted mb-0">No conversations yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h3 class="mb-3">Messages</h3>
+                <div class="chat-box mb-3">
+                    {% for message in selected_messages %}
+                        <div class="mb-3 {% if message.sender == request.user %}text-end{% endif %}">
+                            <div class="chat-bubble {% if message.sender == request.user %}chat-bubble-me{% else %}chat-bubble-other{% endif %}">
+                                <div>{{ message.content }}</div>
+                                <small class="text-muted">{{ message.created_at|date:"M d, H:i" }}</small>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p class="text-muted">Select a conversation to view messages.</p>
+                    {% endfor %}
+                </div>
+                {% if selected_conversation %}
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="input-group">
+                            <input type="text" name="content" class="form-control" placeholder="Type your message">
+                            <button class="btn btn-primary">Send</button>
+                        </div>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

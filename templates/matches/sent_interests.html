@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <h2 class="mb-4">Sent Interests</h2>
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th>Profile</th>
+                        <th>Status</th>
+                        <th>Sent On</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for interest in interests %}
+                        <tr>
+                            <td>{{ interest.receiver.profile.full_name|default:interest.receiver.email }}</td>
+                            <td><span class="badge bg-info text-dark">{{ interest.status|title }}</span></td>
+                            <td>{{ interest.created_at|date:"M d, Y H:i" }}</td>
+                            <td>
+                                {% if interest.status == "pending" %}
+                                    <a href="{% url 'matches:cancel-interest' interest.id %}" class="btn btn-sm btn-outline-danger">Cancel</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr><td colspan="4" class="text-muted">No sent interests yet.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
